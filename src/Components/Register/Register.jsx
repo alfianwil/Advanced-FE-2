@@ -1,64 +1,114 @@
-import React from "react";
 import "./Register.css";
+import React from "react";
+import bgimage from "../Assets/bg1.jpeg";
 import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
 
 const Register = () => {
   return (
-    <div className="container">
-      <div className="title">
-        <img src={chill} alt="chill" />
-        <br />
-        Masuk
-        <br />
-        <h6>Selamat datang kembali!</h6>
+    <div
+  className="flex relative justify-center items-center min-h-screen p-2 bg-cover bg-center"
+  style={{
+    backgroundImage: `url('${bgimage}')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    margin: '0',
+    padding: '0',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }}
+>
+  <div
+    className="absolute flex flex-col items-left justify-center "
+    style={{
+      boxSizing: 'border-box',
+      height: '630px',
+      borderRadius: '5px',
+      backgroundColor: '#282a2c',
+      
+      width: '400px', // Max width for the form
+      opacity: 0.9,
+      zIndex: 10, // Ensures that the form is on top of any other content
+      padding: '2rem',
+      textAlign: 'center', // Ensure text is centered
+    }}
+  >
+    <img className="mx-auto mb-4" src={chill} alt="chill" />
+    
+    {/* Adjusted h1 and h3 with inline styles to ensure visibility */}
+    <h1
+      style={{
+        color: 'white', // Ensure text is white
+        fontSize: '2rem', // Adjust font size
+        fontWeight: '600', // Bold weight
+        marginBottom: '10px', // Add some spacing
+      }}
+    >
+      Daftar
+    </h1>
+    
+    <h3
+      style={{
+        color: 'white', // Ensure text is white
+        fontSize: '1.25rem', // Adjust font size
+        fontWeight: '500', // Medium weight
+        marginBottom: '20px', // Add some spacing
+      }}
+    >
+      Selamat datang!
+    </h3>
+
+    <form className="formlogin"action="#">
+      <div className="input-box mb-4">
+        <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
+        <input type="text"
+    placeholder="Masukkan username"
+    required
+    style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }}  />
       </div>
-      <div className="content">
-        <form action="#">
-          <div className="user-details">
-            <div className="input-box">
-              <span className="details">Username</span>
-              <input type="text" placeholder="Masukkan username" required />
-            </div>
-            <div className="input-box">
-              <span className="details">Kata sandi</span>
-              <input
-                type="password"
-                placeholder="Masukkan kata sandi"
-                required
-              />
-            </div>
-            <div className="input-box">
-              <span className="details">Konfirmasi Kata Sandi</span>
-              <input
-                type="password"
-                placeholder="Masukkan kata sandi"
-                required
-              />
-            </div>
-            <div className="registration">
-              <p>
-                Sudah punya akun?{" "}
-                <a href="login.html">
-                  <b>Masuk</b>
-                </a>
-              </p>
-              <a href="login.html"></a>
-            </div>
-          </div>
-          <div className="button">
-            <input type="submit" value="Daftar" />
-          </div>
-          <center style={{ margin: "10px", fontSize: "13px" }}>Atau</center>
-          <div className="button">
-            <div className="wrapper">
-              <img className="comment-profile-pic" src={google} alt="google" />
-            </div>
-            <input type="submit" value="Daftar dengan google" />
-          </div>
-        </form>
+      <div className="input-box mb-4">
+        <span className="details" style={{textAlign: 'left', color:"white"}}>Kata sandi</span>
+        <input
+          type="password"
+          placeholder="Masukkan Kata Sandi"
+          required
+          style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
+        />
       </div>
-    </div>
+      <div className="input-box mb-4">
+        <span className="details" style={{textAlign: 'left', color:"white"}}>Konfirmasi Kata Sandi</span>
+        <input
+          type="password"
+          placeholder="Masukkan Kata Sandi"
+          required
+          style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
+        />
+      </div>
+      <div className="registration-login text-left mb-4">
+        <p style={{ color: 'white' }}>
+          Sudah punya akun? <a href="login.html">Masuk</a>
+        </p>
+        
+      </div>
+
+      <div className="button mb-2">
+        <input type="submit" value="Masuk" />
+      </div>
+
+      <center style={{  fontSize: '12px', color: 'white' }}>Atau</center>
+      <div className="button">
+        <div className="ggl1 mb-2">
+          <img className="ggllogin" src={google} alt="google" />
+        </div>
+        <input type="submit" value="Masuk dengan google" />
+      </div>
+    </form>
+  </div>
+</div>
+  
   );
 };
 

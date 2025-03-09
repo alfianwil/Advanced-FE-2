@@ -1,0 +1,8 @@
+{
+  "bracketSpacing": false,
+  "spaceBeforeFunctionParen": false,
+  "arrowParens": "avoid",
+  "semi": false,
+  "singleQuote": false,
+  "trailingComma": "es5"
+}
