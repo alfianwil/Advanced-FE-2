@@ -1,10 +1,57 @@
 import "./Register.css";
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import bgimage from "../Assets/bg1.jpeg";
 import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+function Register(){
+
+  const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    setUsers(storedUsers);
+  }, []);
+  
+  useEffect(() => {
+    localStorage.setItem('users', JSON.stringify(users));
+  }, [users]);
+
+  
+  // Load users from localStorage when the component mounts
+  const handleRegister = (e) => {
+    e.preventDefault();
+
+    // Validate password and confirmation match
+    if (password !== passwordConfirm) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    // Check if the username already exists in localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const userExists = storedUsers.some((user) => user.username === username);
+
+    if (userExists) {
+      setError('Username already exists.');
+      return;
+    }
+
+    // Create a new user and save it to localStorage
+    const newUser = { username, password };
+    storedUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    alert('User registered successfully!');
+    navigate('/login');
+  };
+
+
   return (
     <div
   className="flex relative justify-center items-center min-h-screen p-2 bg-cover bg-center"
@@ -60,42 +107,50 @@ const Register = () => {
     >
       Selamat datang!
     </h3>
-
-    <form className="formlogin"action="#">
+{error && <p style={{ color: 'red' }}>{error}</p>}
+    <form className="formlogin" onSubmit={handleRegister}>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
         <input type="text"
-    placeholder="Masukkan username"
-    required
+   placeholder="Masukkan Username"
+   value={username}
+   onChange={(e) => setUsername(e.target.value)}
+   required
     style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }}  />
       </div>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Kata sandi</span>
         <input
-          type="password"
+          
           placeholder="Masukkan Kata Sandi"
-          required
+          type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
           style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
         />
       </div>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Konfirmasi Kata Sandi</span>
         <input
-          type="password"
+          
           placeholder="Masukkan Kata Sandi"
-          required
+          type="password"
+              value={passwordConfirm}
+              onChange={(e) => setPasswordConfirm(e.target.value)}
+              required
           style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
         />
       </div>
       <div className="registration-login text-left mb-4">
         <p style={{ color: 'white' }}>
-          Sudah punya akun? <a href="login.html">Masuk</a>
+          Sudah punya akun? <a href="Login">Masuk</a>
         </p>
         
       </div>
 
       <div className="button mb-2">
-        <input type="submit" value="Masuk" />
+        <input type="submit" value="Daftar" />
       </div>
 
       <center style={{  fontSize: '12px', color: 'white' }}>Atau</center>
@@ -103,7 +158,7 @@ const Register = () => {
         <div className="ggl1 mb-2">
           <img className="ggllogin" src={google} alt="google" />
         </div>
-        <input type="submit" value="Masuk dengan google" />
+        <input type="submit" value="Daftar dengan google" />
       </div>
     </form>
   </div>

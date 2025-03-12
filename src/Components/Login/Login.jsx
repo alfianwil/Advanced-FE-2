@@ -1,11 +1,110 @@
-import React from "react";
+
 import "./Login.css";
 import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
 import bgimage from "../Assets/bg1.jpeg";
-const Login = () => {
+import React, { useState } from 'react';
+ import { useNavigate } from 'react-router-dom'
+
+function LoginPage() {
+  // const [users, setUsers] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [currentUser, setCurrentUser] = useState(null);
+  const [error, setError] = useState('');
+  const navigate = useNavigate(); // To navigate to another page after successful login
+
+
+  // useEffect(() => {
+  //   const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+  //   setUsers(storedUsers);
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('users', JSON.stringify(users));
+  // }, [users]);
+
+  // Check if the user is already logged in when the component mounts
+ /* useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setIsLoggedIn(true);
+    }
+  }, []);*/
+
+
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Retrieve stored users from localStorage
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+
+    // Check if the entered username and password match any stored user
+    const user = storedUsers.find((user) => user.username === username && user.password === password);
+
+    if (user) {
+      setError(''); // Clear any error messages
+      alert('Login successfully');
+      // Redirect to the dashboard or home page upon successful login
+      navigate('../Home'); // You can change '/home' to any route you want to redirect to
+    } else {
+      setError('Invalid username or password.'); // Set error if login fails
+    }
+  };
+
+  // const handleLogout = () => {
+  //   // Remove user data from localStorage and update the login state
+  //   // localStorage.removeItem('user');
+  //   // setIsLoggedIn(false);
+  //   setIsLoggedIn(false);
+  //   setCurrentUser(null);
+  // };
+
+  // const handleAddUser = () => {
+  //   // Check if the username already exists
+  //   const userExists = users.some((user) => user.username === username);
+  //   if (userExists) {
+  //     alert('Username already exists');
+  //   } else {
+  //     // Add a new user
+  //     const newUser = { username, password };
+  //     setUsers([...users, newUser]);
+  //   }
+  // };
+
+  // const handleUpdateUser = () => {
+  //   // Update the user's password
+  //   const updatedUsers = users.map((user) => 
+  //     user.username === currentUser.username 
+  //       ? { ...user, password: password }
+  //       : user
+  //   );
+  //   setUsers(updatedUsers);
+  //   setCurrentUser({ ...currentUser, password });
+  //   alert('Password updated successfully');
+  // };
+
+  // const handleDeleteUser = () => {
+  //   // Delete the user from the list
+  //   const updatedUsers = users.filter((user) => user.username !== currentUser.username);
+  //   setUsers(updatedUsers);
+  //   setIsLoggedIn(false);
+  //   setCurrentUser(null);
+  //   alert('User deleted successfully');
+  // };
+
+
   return (
-    
+    // <div>
+    // {/* {isLoggedIn ? (
+    //   <div className="text-white">
+    //     <h2>Welcome, {currentUser.username}!</h2>
+    //     <button onClick={handleLogout}>Logout</button>
+    //     <button onClick={handleUpdateUser}>Update Password</button>
+    //       <button onClick={handleDeleteUser}>Delete Account</button>
+    //   </div> ):( */}
     <div
   className="flex relative justify-center items-center min-h-screen p-2 bg-cover bg-center"
   style={{
@@ -60,27 +159,31 @@ const Login = () => {
     >
       Selamat datang kembali!
     </h3>
-
-    <form className="formlogin"action="#">
+    {error && <p style={{ color: 'red' }}>{error}</p>}
+    <form className="formlogin" onSubmit={handleLogin}>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
-        <input type="text"
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
+        required
     placeholder="Masukkan username"
-    required
+    
     style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }}  />
       </div>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Kata sandi</span>
         <input
           type="password"
-          placeholder="Masukkan password"
+          value={password} 
+          onChange={(e) => setPassword(e.target.value)}
           required
+          placeholder="Masukkan password"
+          
           style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
         />
       </div>
       <div className="registration-login text-center mb-4">
         <p style={{ color: 'white' }}>
-          Belum punya akun? <a href="login.html">daftar</a>
+          Belum punya akun? <a  href="./Register">daftar</a>
         </p>
         <a href="login.html">Lupa kata sandi?</a>
       </div>
@@ -99,9 +202,13 @@ const Login = () => {
     </form>
   </div>
 </div>
+      
+    
+  
+  );  
+};  
 
+  
+  
 
-  );
-};
-
-export default Login;
+export default LoginPage;
