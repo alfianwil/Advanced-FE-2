@@ -4,9 +4,14 @@ import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
 import bgimage from "../Assets/bg1.jpeg";
 import React, { useState } from 'react';
- import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+ 
+import { loginUser } from '../../services/api/api.js';
+ 
 
-function LoginPage() {
+
+
+/* function LoginPage() {
   // const [users, setUsers] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -14,26 +19,6 @@ function LoginPage() {
   // const [currentUser, setCurrentUser] = useState(null);
   const [error, setError] = useState('');
   const navigate = useNavigate(); // To navigate to another page after successful login
-
-
-  // useEffect(() => {
-  //   const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-  //   setUsers(storedUsers);
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem('users', JSON.stringify(users));
-  // }, [users]);
-
-  // Check if the user is already logged in when the component mounts
- /* useEffect(() => {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      setIsLoggedIn(true);
-    }
-  }, []);*/
-
-
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -54,6 +39,28 @@ function LoginPage() {
     }
   };
 
+
+ */
+  // useEffect(() => {
+  //   const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+  //   setUsers(storedUsers);
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('users', JSON.stringify(users));
+  // }, [users]);
+
+  // Check if the user is already logged in when the component mounts
+ /* useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setIsLoggedIn(true);
+    }
+  }, []);*/
+
+
+
+  
   // const handleLogout = () => {
   //   // Remove user data from localStorage and update the login state
   //   // localStorage.removeItem('user');
@@ -95,16 +102,30 @@ function LoginPage() {
   //   alert('User deleted successfully');
   // };
 
+  const LoginPage = () => {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate(); // Use useNavigate hook
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      // Call the login function to authenticate user
+      const user = await loginUser(username, password);
+  
+      if (user) {
+        // If user is found, redirect to home page
+        navigate('../Home/');
+      } else {
+        // Show error if username or password don't match
+        setError('Invalid username or password');
+      }
+    };
+  
 
   return (
-    // <div>
-    // {/* {isLoggedIn ? (
-    //   <div className="text-white">
-    //     <h2>Welcome, {currentUser.username}!</h2>
-    //     <button onClick={handleLogout}>Logout</button>
-    //     <button onClick={handleUpdateUser}>Update Password</button>
-    //       <button onClick={handleDeleteUser}>Delete Account</button>
-    //   </div> ):( */}
+
     <div
   className="flex relative justify-center items-center min-h-screen p-2 bg-cover bg-center"
   style={{
@@ -160,7 +181,7 @@ function LoginPage() {
       Selamat datang kembali!
     </h3>
     {error && <p style={{ color: 'red' }}>{error}</p>}
-    <form className="formlogin" onSubmit={handleLogin}>
+    <form className="formlogin" onSubmit={handleSubmit}>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
         <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
@@ -185,7 +206,7 @@ function LoginPage() {
         <p style={{ color: 'white' }}>
           Belum punya akun? <a  href="./Register">daftar</a>
         </p>
-        <a href="login.html">Lupa kata sandi?</a>
+        <a href="../Updates">Lupa kata sandi?</a>
       </div>
 
       <div className="button mb-3">
@@ -202,13 +223,18 @@ function LoginPage() {
     </form>
   </div>
 </div>
-      
-    
-  
+         // <div>
+    // {/* {isLoggedIn ? (
+    //   <div className="text-white">
+    //     <h2>Welcome, {currentUser.username}!</h2>
+    //     <button onClick={handleLogout}>Logout</button>
+    //     <button onClick={handleUpdateUser}>Update Password</button>
+    //       <button onClick={handleDeleteUser}>Delete Account</button>
+    //   </div> ):( */} 
   );  
 };  
 
   
-  
+
 
 export default LoginPage;

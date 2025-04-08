@@ -75,7 +75,7 @@ const Home = () => {
       <a href="#" className="block px-4 py-2 text-sm text-gray-700">
         Ubah Premium
       </a>
-      <a href="#" className="block px-4 py-2 text-sm text-gray-700">
+      <a href="../Login" className="block px-4 py-2 text-sm text-gray-700">
         Keluar
       </a>
     </div>
