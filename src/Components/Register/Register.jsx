@@ -3,8 +3,13 @@ import React, { useState } from 'react';
 import bgimage from "../Assets/bg1.jpeg";
 import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
-import {  addUser  } from '../../services/api/api.js';
+//import {  addUser  } from '../../services/api/api.js';
 //import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { createUser } from '../../features/users/userSlice'; // adjust path if needed
+import { useNavigate } from 'react-router-dom';
+
+
 
 
 
@@ -55,13 +60,43 @@ import {  addUser  } from '../../services/api/api.js';
 //   };
 
 const Register = () => {
+   // 🔁 1. Define state for the form
+   const [form, setForm] = useState({
+    username: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  // 🔁 2. Setup dispatch and navigation
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // 🔁 3. Handle the form submission
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const { username, password, confirmPassword } = form;
+
+    if (password !== confirmPassword) {
+      alert("Passwords don't match!");
+      return;
+    }
+
+    try {
+      await dispatch(createUser({ username, password }));
+      alert('Registration successful!');
+      navigate('/login'); // Change path based on your app's routing
+    } catch (err) {
+      console.error('Registration error:', err);
+      alert('Failed to register. Please try again.');
+    }
+  };
   //const [users, setUsers] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
- // const [error, setError] = useState('');
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+//   const [username, setUsername] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [passwordConfirm, setPasswordConfirm] = useState('');
+//  // const [error, setError] = useState('');
+//   const [error, setError] = useState('');
+//   const [successMessage, setSuccessMessage] = useState('');
 
   // Fetch users when the component mounts
   /* useEffect(() => {
@@ -74,46 +109,46 @@ const Register = () => {
   }, []); */
 
   // Add a new user
-  const handleAddUser = async (e) => {
-    e.preventDefault();
+  // const handleAddUser = async (e) => {
+  //   e.preventDefault();
 
-    // Validate passwords match
-    if (password !== passwordConfirm) {
-      setError('Passwords do not match.');
-      return;
-    }
+  //   // Validate passwords match
+  //   if (password !== passwordConfirm) {
+  //     setError('Passwords do not match.');
+  //     return;
+  //   }
 
-    // Ensure both fields are provided
-    if (!username || !password) {
-      setError('Please enter both a username and a password.');
-      return;
-    }
+  //   // Ensure both fields are provided
+  //   if (!username || !password) {
+  //     setError('Please enter both a username and a password.');
+  //     return;
+  //   }
 
-    // Prepare the new user object
-    const newUser = {
-      username,
-      password,
-    };
+  //   // Prepare the new user object
+  //   const newUser = {
+  //     username,
+  //     password,
+  //   };
 
-    try {
-      // Call the addUser function to send data to MockAPI
-      const addedUser = await addUser(newUser);
+  //   try {
+  //     // Call the addUser function to send data to MockAPI
+  //     const addedUser = await addUser(newUser);
 
-      if (addedUser) {
-        setSuccessMessage('User registered successfully!');
-        console.log('User added:', addedUser);
-        // Optionally, reset the form
-        setUsername('');
-        setPassword('');
-        setPasswordConfirm('');
-      } else {
-        setError('Failed to register user');
-      }
-    } catch (err) {
-      console.error('Error:', err);
-      setError('Failed to register user');
-    }
-  };
+  //     if (addedUser) {
+  //       setSuccessMessage('User registered successfully!');
+  //       console.log('User added:', addedUser);
+  //       // Optionally, reset the form
+  //       setUsername('');
+  //       setPassword('');
+  //       setPasswordConfirm('');
+  //     } else {
+  //       setError('Failed to register user');
+  //     }
+  //   } catch (err) {
+  //     console.error('Error:', err);
+  //     setError('Failed to register user');
+  //   }
+  // };
 
   // Update an existing user
   /* const handleUpdateUser = async (userId) => {
@@ -189,14 +224,14 @@ const Register = () => {
     >
       Selamat datang!
     </h3>
-{error && <p style={{ color: 'red' }}>{error}</p>}
-    <form className="formlogin" onSubmit={handleAddUser}>
+{/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
+    <form className="formlogin" onSubmit={handleRegister}>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
         <input type="text"
    placeholder="Masukkan Username"
-   value={username}
-   onChange={(e) => setUsername(e.target.value)}
+   value={form.username}
+   onChange={(e) => setForm({ ...form, username: e.target.value })}
    required
     style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }}  />
       </div>
@@ -206,8 +241,8 @@ const Register = () => {
           
           placeholder="Masukkan Kata Sandi"
           type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
                 required
           style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
         />
@@ -218,8 +253,9 @@ const Register = () => {
           
           placeholder="Masukkan Kata Sandi"
           type="password"
-              value={passwordConfirm}
-              onChange={(e) => setPasswordConfirm(e.target.value)}
+              value={form.confirmPassword}
+              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+
               required
           style={{ width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '15px' }} 
         />
@@ -244,8 +280,8 @@ const Register = () => {
       </div>
     </form>
     <div>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {successMessage && <p style={{ color: 'red', fontSize: '20px' }}>{successMessage}</p>}
+        
+        {/* {successMessage && <p style={{ color: 'red', fontSize: '20px' }}>{successMessage}</p>} */}
       </div>
   </div>
 </div>

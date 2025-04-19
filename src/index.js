@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { onCLS, onFCP, onFID, onLCP, onTTFB } from 'web-vitals';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
 
 const sendToAnalytics = (metric) => {
   // Log the metric or send it to an analytics service
@@ -28,7 +30,9 @@ onTTFB(sendToAnalytics);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

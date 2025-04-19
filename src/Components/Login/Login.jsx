@@ -3,10 +3,12 @@ import "./Login.css";
 import chill from "../Assets/chill.png";
 import google from "../Assets/google.png";
 import bgimage from "../Assets/bg1.jpeg";
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers, loginUser } from '../../features/users/userSlice';
  
-import { loginUser } from '../../services/api/api.js';
+//import { loginUser } from '../../services/api/api.js';
  
 
 
@@ -102,7 +104,7 @@ import { loginUser } from '../../services/api/api.js';
   //   alert('User deleted successfully');
   // };
 
-  const LoginPage = () => {
+ /* const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -121,9 +123,29 @@ import { loginUser } from '../../services/api/api.js';
         // Show error if username or password don't match
         setError('Invalid username or password');
       }
-    };
+    };*/
   
+    const Login = () => {
+      const navigate = useNavigate();
+      const dispatch = useDispatch();
+      const [form, setForm] = useState({ username: '', password: '' });
+      const { currentUser, error } = useSelector((state) => state.users);
+    
+      useEffect(() => {
+        dispatch(fetchUsers()); // Load users into global state
+      }, [dispatch]);
+    
+      const handleLogin = (e) => {
+        e.preventDefault();
+        dispatch(loginUser(form));
+      };
 
+      useEffect(() => {
+        if (currentUser) {
+          navigate('/Home'); // 🔁 change this route to match your actual Home route
+        }
+      }, [currentUser, navigate]);
+    
   return (
 
     <div
@@ -181,10 +203,10 @@ import { loginUser } from '../../services/api/api.js';
       Selamat datang kembali!
     </h3>
     {error && <p style={{ color: 'red' }}>{error}</p>}
-    <form className="formlogin" onSubmit={handleSubmit}>
+    <form className="formlogin" onSubmit={handleLogin}>
       <div className="input-box mb-4">
         <span className="details" style={{textAlign: 'left', color:"white"}}>Username</span>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
+        <input type="text" value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })}
         required
     placeholder="Masukkan username"
     
@@ -194,8 +216,8 @@ import { loginUser } from '../../services/api/api.js';
         <span className="details" style={{textAlign: 'left', color:"white"}}>Kata sandi</span>
         <input
           type="password"
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)}
+          value={form.password} 
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
           required
           placeholder="Masukkan password"
           
@@ -221,6 +243,8 @@ import { loginUser } from '../../services/api/api.js';
         <input type="submit" value="Masuk dengan google" />
       </div>
     </form>
+    {error && <p style={{ color: 'red' }}>{error}</p>}
+    {currentUser && <p>Welcome, {currentUser.username}!</p>}
   </div>
 </div>
          // <div>
@@ -237,4 +261,4 @@ import { loginUser } from '../../services/api/api.js';
   
 
 
-export default LoginPage;
+export default Login;
