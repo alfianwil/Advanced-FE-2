@@ -1,3 +1,6 @@
+```env
+REACT_APP_API_URL=https://67f1aea5c733555e24add3ea.mockapi.io/api/v1/
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
