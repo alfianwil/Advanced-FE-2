@@ -1,3 +1,4 @@
+## 🔐 Environment Variables
 ```env
 REACT_APP_API_URL=https://67f1aea5c733555e24add3ea.mockapi.io/api/v1/
 
